@@ -6,13 +6,13 @@ import java.util.Date;
 import com.asiainfo.lucene.core.field.LuceneFieldType;
 
 public class MinxBean {
-	@LuceneFieldType(effectived=false)
+	@LuceneFieldType(effectived=false,stored=true)
 	private long id;
-	@LuceneFieldType(indexed=true)
+	@LuceneFieldType(indexed=true,stored=true)
 	private String name;
 	@LuceneFieldType(indexed=true,stored=true)
 	private Timestamp createTime;
-	@LuceneFieldType(indexed=true)
+	@LuceneFieldType(indexed=true,stored=true)
 	private Date effectiveDate;
 	private String noAllow;
 	public long getId() {
