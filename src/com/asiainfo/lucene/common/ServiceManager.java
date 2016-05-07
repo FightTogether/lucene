@@ -3,6 +3,8 @@ package com.asiainfo.lucene.common;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
+import com.asiainfo.lucene.core.store.DataStore;
+
 public class ServiceManager {
 	private static transient Log log = LogFactory.getLog(ServiceManager.class);
 	private static DataStore m_dataStore=null;

@@ -11,7 +11,6 @@ import org.apache.lucene.search.IndexSearcher;
 import org.apache.lucene.search.Query;
 import org.apache.lucene.search.ScoreDoc;
 
-import com.asiainfo.lucene.common.DataStore;
 import com.asiainfo.lucene.common.LuceneDataTypeHelper;
 
 public class DataStoreImpl implements DataStore {
