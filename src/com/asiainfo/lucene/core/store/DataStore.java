@@ -23,7 +23,8 @@ public interface DataStore {
 	ScoreDoc[] retrieveScoreDoc(IndexSearcher indexSearcher, Query query, int top) throws Exception;
 
 	Document[] retrieveDocument(IndexSearcher indexSearcher, Query query, int top) throws Exception;
-//	createQuery
-//	criteria 
-//	http://www.cnblogs.com/xusir/archive/2013/06/09/3130210.html
+
+	Object[] retrieve(IndexSearcher indexSearcher, Query parseQuery, int i) throws Exception;
+
+	Object[] retrieve(IndexSearcher indexSearcher, Query query) throws Exception;
 }

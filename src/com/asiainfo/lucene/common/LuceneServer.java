@@ -33,6 +33,8 @@ public class LuceneServer {
 		initDict();
 		indexInit();
 	}
+	public static void stop() throws Exception {
+	}
 
 	private static void initDict() {
 		Configuration cfg = DefaultConfig.getInstance();

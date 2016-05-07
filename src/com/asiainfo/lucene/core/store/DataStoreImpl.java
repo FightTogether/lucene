@@ -2,6 +2,7 @@ package com.asiainfo.lucene.core.store;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 import org.apache.lucene.document.Document;
@@ -32,8 +33,12 @@ public class DataStoreImpl implements DataStore {
 
 	@Override
 	public void saveBean(IndexWriter indexWriter, Object object) throws Exception {
-		Document document=LuceneDataTypeHelper.createDocument(object);
-		save(indexWriter, document);
+		if(object instanceof Object[]){
+			saveBatchBean(indexWriter, (Object[])object);
+		}else{
+			Document document=LuceneDataTypeHelper.createDocument(object);
+			save(indexWriter, document);
+		}
 	}
 	@Override
 	public void saveBatchBean(IndexWriter indexWriter, Object[] objects) throws Exception {
@@ -58,5 +63,18 @@ public class DataStoreImpl implements DataStore {
 		}
 		return documents;
 	}
-//	public Object[] retrieve
+	@Override
+	public Object[] retrieve(IndexSearcher indexSearcher, Query query,int top) throws Exception {
+		Document[] documents= retrieveDocument(indexSearcher, query, top);
+		if(documents==null||documents.length==0)return null;
+		Object[] objs=new Object[documents.length];
+		for(int i=0,n=documents.length;i<n;i++ ){
+			objs[i]=LuceneDataTypeHelper.wrap(documents[i]);			 
+		}
+		return objs;
+	}
+	@Override
+	public Object[] retrieve(IndexSearcher indexSearcher, Query query) throws Exception {
+		return retrieve(indexSearcher, query, Integer.MAX_VALUE);
+	}
 }

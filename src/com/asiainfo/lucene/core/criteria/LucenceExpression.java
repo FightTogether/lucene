@@ -16,7 +16,7 @@ import com.asiainfo.lucene.core.criteria.Criteria.Criterion;
 public class LucenceExpression {
 	public LucenceExpression() {
 	}
-
+//	http://www.cnblogs.com/xusir/archive/2013/06/09/3130210.html
 	public static Query parseQuery(Criteria criteria, Analyzer analyzer) throws ParseException {
 		if (criteria == null || criteria.isEmpty()) return null;
 		ArrayList<String> stringQuery = new ArrayList<String>(criteria.size());

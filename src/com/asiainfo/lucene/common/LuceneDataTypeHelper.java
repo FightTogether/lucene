@@ -28,30 +28,30 @@ import com.asiainfo.lucene.core.field.LuceneFieldType;
 public class LuceneDataTypeHelper {
 	private static transient Log log = LogFactory.getLog(LuceneDataTypeHelper.class);
 
-	public static Field getLuceneField(String luceneFieldName,Object value,org.apache.lucene.document.FieldType fieldType){
-		Field luceneField=null;
-		if(value instanceof String){
-			luceneField=new Field(luceneFieldName,(String)value, fieldType);
-		}else if(value instanceof Long){
-			luceneField=new LongField(luceneFieldName,(long) value, fieldType);
-		}else if(value instanceof Integer){
-			luceneField=new IntField(luceneFieldName,(int) value, fieldType);
-		}else if(value instanceof Date){
-			luceneField=new Field(luceneFieldName,DateTools.dateToString((Date)value, DateTools.Resolution.MILLISECOND), fieldType);
-		}else if(value instanceof Timestamp){
-			luceneField=new Field(luceneFieldName,DateTools.dateToString((Timestamp)value, DateTools.Resolution.MILLISECOND), fieldType);
-		}else if(value instanceof Double){
-			luceneField=new DoubleField(luceneFieldName,(double) value, fieldType);
-		}else if(value instanceof Float){
-			luceneField=new FloatField(luceneFieldName,(float) value, fieldType);
-		}else if(value instanceof Byte){
-			luceneField=new ByteDocValuesField(luceneFieldName, (byte)value);
-		}else{
-			luceneField=new Field(luceneFieldName,value.toString(), fieldType);
+	public static Field getLuceneField(String luceneFieldName, Object value, org.apache.lucene.document.FieldType fieldType) {
+		Field luceneField = null;
+		if (value instanceof String) {
+			luceneField = new Field(luceneFieldName, (String) value, fieldType);
+		} else if (value instanceof Long) {
+			luceneField = new LongField(luceneFieldName, (long) value, fieldType);
+		} else if (value instanceof Integer) {
+			luceneField = new IntField(luceneFieldName, (int) value, fieldType);
+		} else if (value instanceof Date) {
+			luceneField = new Field(luceneFieldName, DateTools.dateToString((Date) value, DateTools.Resolution.MILLISECOND), fieldType);
+		} else if (value instanceof Timestamp) {
+			luceneField = new Field(luceneFieldName, DateTools.dateToString((Timestamp) value, DateTools.Resolution.MILLISECOND), fieldType);
+		} else if (value instanceof Double) {
+			luceneField = new DoubleField(luceneFieldName, (double) value, fieldType);
+		} else if (value instanceof Float) {
+			luceneField = new FloatField(luceneFieldName, (float) value, fieldType);
+		} else if (value instanceof Byte) {
+			luceneField = new ByteDocValuesField(luceneFieldName, (byte) value);
+		} else {
+			luceneField = new Field(luceneFieldName, value.toString(), fieldType);
 		}
 		return luceneField;
 	}
-	
+
 	public static Object transfer(Object value, Class<?> type) {
 		if (value == null) return null;
 		if (((value instanceof String)) && (value.toString().trim().equals(""))) {
@@ -60,25 +60,13 @@ public class LuceneDataTypeHelper {
 			}
 			return null;
 		}
-
-		if ((type.equals(Short.class)) || (type.equals(Short.TYPE))) {
-			if ((value instanceof Short)) {
-				return value;
-			}
-			return new Short(new BigDecimal(value.toString()).shortValue());
-		}
 		if ((type.equals(Integer.class)) || (type.equals(Integer.TYPE))) {
 			if ((value instanceof Integer)) {
 				return value;
 			}
 			return new Integer(new BigDecimal(value.toString()).intValue());
 		}
-		if ((type.equals(Character.class)) || (type.equals(Character.TYPE))) {
-			if ((value instanceof Character)) {
-				return value;
-			}
-			return new Character(value.toString().charAt(0));
-		}
+
 		if ((type.equals(Long.class)) || (type.equals(Long.TYPE))) {
 			if ((value instanceof Long)) {
 				return value;
@@ -91,28 +79,15 @@ public class LuceneDataTypeHelper {
 			}
 			return value.toString();
 		}
-		if (type.equals(java.sql.Date.class)) {
-			if ((value instanceof java.sql.Date)) return value;
-			if ((value instanceof java.util.Date)) {
-				return new java.sql.Date(((java.util.Date) value).getTime());
+		if (type.equals(java.util.Date.class)) {
+			if ((value instanceof java.util.Date)) return value;
+			if ((value instanceof java.sql.Date)) {
+				return new java.util.Date(((java.sql.Date) value).getTime());
 			}
 			try {
-				return new java.sql.Date(DateTools.stringToTime(value.toString()));
+				return new java.util.Date(DateTools.stringToTime(value.toString()));
 			} catch (Exception e) {
-				String msg = String.format("value[%s],transfer %s type error", new String[] { value.toString(), "Date" });
-				log.error(msg, e);
-				throw new RuntimeException(msg);
-			}
-		}
-		if (type.equals(Time.class)) {
-			if ((value instanceof Time)) return value;
-			if ((value instanceof java.util.Date)) {
-				return new Time(((java.util.Date) value).getTime());
-			}
-			try {
-				return new Time(DateTools.stringToTime(value.toString()));
-			} catch (Exception e) {
-				String msg = String.format("value[%s],transfer %s type error", new String[] { value.toString(), "Time" });
+				String msg = String.format("value[%s],transfer %s type error", new String[] { value.toString(), "java.util.Date" });
 				log.error(msg, e);
 				throw new RuntimeException(msg);
 			}
@@ -165,9 +140,47 @@ public class LuceneDataTypeHelper {
 			String msg = String.format("value[%s],transfer %s type error", new String[] { value.toString(), "Boolean" });
 			throw new RuntimeException(msg);
 		}
-
+		if ((type.equals(Short.class)) || (type.equals(Short.TYPE))) {
+			if ((value instanceof Short)) {
+				return value;
+			}
+			return new Short(new BigDecimal(value.toString()).shortValue());
+		}
+		if ((type.equals(Character.class)) || (type.equals(Character.TYPE))) {
+			if ((value instanceof Character)) {
+				return value;
+			}
+			return new Character(value.toString().charAt(0));
+		}
+		if (type.equals(java.sql.Date.class)) {
+			if ((value instanceof java.sql.Date)) return value;
+			if ((value instanceof java.util.Date)) {
+				return new java.sql.Date(((java.util.Date) value).getTime());
+			}
+			try {
+				return new java.sql.Date(DateTools.stringToTime(value.toString()));
+			} catch (Exception e) {
+				String msg = String.format("value[%s],transfer %s type error", new String[] { value.toString(), "java.sql.Date" });
+				log.error(msg, e);
+				throw new RuntimeException(msg);
+			}
+		}
+		if (type.equals(Time.class)) {
+			if ((value instanceof Time)) return value;
+			if ((value instanceof java.util.Date)) {
+				return new Time(((java.util.Date) value).getTime());
+			}
+			try {
+				return new Time(DateTools.stringToTime(value.toString()));
+			} catch (Exception e) {
+				String msg = String.format("value[%s],transfer %s type error", new String[] { value.toString(), "Time" });
+				log.error(msg, e);
+				throw new RuntimeException(msg);
+			}
+		}
 		return value;
 	}
+
 	public static String gettingMethodName(String fieldName) {
 		return "get" + fieldName.substring(0, 1).toUpperCase() + fieldName.substring(1);
 	}
@@ -183,26 +196,28 @@ public class LuceneDataTypeHelper {
 		String className = clazz.getName();
 		for (java.lang.reflect.Field field : classFields) {
 			LuceneFieldType fieldTypeAnnotation = field.getAnnotation(LuceneFieldType.class);
-			FieldType fieldType=transform(fieldTypeAnnotation);
-			if(fieldType==null)continue;
+			FieldType fieldType = transform(fieldTypeAnnotation);
+			if (fieldType == null) continue;
 			String fieldName = field.getName();
 			String getterMethodName = gettingMethodName(fieldName);
 			Method method = clazz.getMethod(getterMethodName);
 			Object fieldValue = method.invoke(obj);
 			Field luceneField = getLuceneField(className + "." + fieldName, fieldValue, fieldType);
-			if (luceneField == null)continue;
+			if (luceneField == null) continue;
 			luceneField.setBoost(getBoost(fieldTypeAnnotation));
 			document.add(luceneField);
 
 		}
 		return document;
 	}
-	public static float getBoost(LuceneFieldType fieldTypeAnnotation){
-		if (fieldTypeAnnotation==null||!fieldTypeAnnotation.effectived()) return 1.0F;
+
+	public static float getBoost(LuceneFieldType fieldTypeAnnotation) {
+		if (fieldTypeAnnotation == null || !fieldTypeAnnotation.effectived()) return 1.0F;
 		return fieldTypeAnnotation.boost();
 	}
+
 	public static org.apache.lucene.document.FieldType transform(LuceneFieldType fieldTypeAnnotation) {
-		if (fieldTypeAnnotation==null||!fieldTypeAnnotation.effectived()) return null;
+		if (fieldTypeAnnotation == null || !fieldTypeAnnotation.effectived()) return null;
 		org.apache.lucene.document.FieldType fieldType = new org.apache.lucene.document.FieldType();
 		fieldType.setStored(fieldTypeAnnotation.stored());
 		fieldType.setTokenized(fieldTypeAnnotation.tokenized());
@@ -216,21 +231,25 @@ public class LuceneDataTypeHelper {
 		fieldType.setIndexOptions(fieldTypeAnnotation.indexOptions());
 		return fieldType;
 	}
-	public static Object wrap(Document document) throws Exception{
-		if(document==null)return null;
-		List<IndexableField> fieldList=document.getFields();
-		if(fieldList==null||fieldList.size()==0)return null;
-		String firstFieldName=fieldList.get(0).name();
-		if(StringUtils.isBlank(firstFieldName)||firstFieldName.indexOf('.')==-1)throw new RuntimeException("field name error");
-		Class<?> clazz=Class.forName(firstFieldName.substring(0, firstFieldName.lastIndexOf('.')));
-		Object object =clazz.newInstance();
-		for(int i=0,n=fieldList.size();i<n;i++){
-			IndexableField field=fieldList.get(i);
-			String luceneFieldName=field.name();
-			String StringValue=field.stringValue();
-			String beanFieldName=luceneFieldName.substring(luceneFieldName.lastIndexOf('.')+1);
-			java.lang.reflect.Field javaBeanField =clazz.getDeclaredField(beanFieldName);
-			Object value=transfer(StringValue, javaBeanField.getType());
+
+	public static Object wrap(Document document) throws Exception {
+		if (document == null) return null;
+		List<IndexableField> fieldList = document.getFields();
+		if (fieldList == null || fieldList.size() == 0) return null;
+		String firstFieldName = fieldList.get(0).name();
+		if (StringUtils.isBlank(firstFieldName) || firstFieldName.indexOf('.') == -1) throw new RuntimeException("field name error");
+		Class<?> clazz = Class.forName(firstFieldName.substring(0, firstFieldName.lastIndexOf('.')));
+		Object object = clazz.newInstance();
+		for (int i = 0, n = fieldList.size(); i < n; i++) {
+			IndexableField field = fieldList.get(i);
+			String luceneFieldName = field.name();
+			String StringValue = field.stringValue();
+			if(log.isDebugEnabled()){
+				log.debug(luceneFieldName);
+			}
+			String beanFieldName = luceneFieldName.substring(luceneFieldName.lastIndexOf('.') + 1);
+			java.lang.reflect.Field javaBeanField = clazz.getDeclaredField(beanFieldName);
+			Object value = transfer(StringValue, javaBeanField.getType());
 			BeanUtils.setProperty(object, beanFieldName, value);
 		}
 		return object;

@@ -45,5 +45,10 @@ public class MinxBean {
 	public void setNoAllow(String noAllow) {
 		this.noAllow = noAllow;
 	}
-	
+	@Override
+	public String toString() {
+		return new StringBuffer().append("id=").append(id).append("  name=").append(name)
+				.append("  createTime=").append(createTime).append("  effectiveDate=").append(effectiveDate)
+				.append("  noAllow=").append(noAllow).toString();
+	}
 }

@@ -41,7 +41,7 @@ public class RecordHelper {
 			long startTime = System.currentTimeMillis();
 			indexWriter.addDocuments(documents);
 			if (log.isInfoEnabled()) {
-				log.info(MessageFormat.format("add documents,time: {0} ms",new Object[] { System.currentTimeMillis() - startTime }));
+				log.info(MessageFormat.format("batch add documents,time: {0} ms",new Object[] { System.currentTimeMillis() - startTime }));
 			}
 		}
 	}
