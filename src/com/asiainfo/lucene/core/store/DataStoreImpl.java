@@ -77,4 +77,9 @@ public class DataStoreImpl implements DataStore {
 	public Object[] retrieve(IndexSearcher indexSearcher, Query query) throws Exception {
 		return retrieve(indexSearcher, query, Integer.MAX_VALUE);
 	}
+
+	@Override
+	public void deleteDocuments(IndexWriter indexWriter, Query... queries) throws Exception {
+		indexWriter.deleteDocuments(queries);
+	}
 }

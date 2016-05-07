@@ -1,20 +1,12 @@
 package com.asiainfo.lucene.common;
 
-import java.sql.Timestamp;
 import java.util.Collection;
-import java.util.Date;
-import java.util.Iterator;
 
-import org.apache.lucene.document.Document;
-import org.apache.lucene.index.IndexWriter;
-import org.apache.lucene.index.IndexableField;
-import org.apache.lucene.search.IndexSearcher;
 import org.wltea.analyzer.cfg.Configuration;
 import org.wltea.analyzer.cfg.DefaultConfig;
 import org.wltea.analyzer.dic.Dictionary;
 import org.wltea.analyzer.lucene.IKAnalyzer;
 
-import com.asiainfo.lucene.bean.MinxBean;
 import com.asiainfo.lucene.common.IndexServiceFactory.IndexSettings;
 import com.asiainfo.lucene.common.util.LuceneCommon;
 

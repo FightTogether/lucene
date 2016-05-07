@@ -24,7 +24,9 @@ public interface DataStore {
 
 	Document[] retrieveDocument(IndexSearcher indexSearcher, Query query, int top) throws Exception;
 
-	Object[] retrieve(IndexSearcher indexSearcher, Query parseQuery, int i) throws Exception;
+	Object[] retrieve(IndexSearcher indexSearcher, Query query, int i) throws Exception;
 
 	Object[] retrieve(IndexSearcher indexSearcher, Query query) throws Exception;
+
+	public void deleteDocuments(IndexWriter indexWriter, Query... queries) throws Exception;
 }
