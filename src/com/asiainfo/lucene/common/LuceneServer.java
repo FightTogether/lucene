@@ -8,7 +8,7 @@ import org.wltea.analyzer.dic.Dictionary;
 import org.wltea.analyzer.lucene.IKAnalyzer;
 
 import com.asiainfo.lucene.common.IndexServiceFactory.IndexSettings;
-import com.asiainfo.lucene.common.util.LuceneCommon;
+import com.asiainfo.lucene.util.LuceneCommon;
 
 public class LuceneServer {
 	private static String strPropertiesName = "lucene.base.properties";

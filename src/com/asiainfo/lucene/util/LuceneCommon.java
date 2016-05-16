@@ -1,4 +1,4 @@
-package com.asiainfo.lucene.common.util;
+package com.asiainfo.lucene.util;
 
 import java.io.IOException;
 import java.io.InputStream;
