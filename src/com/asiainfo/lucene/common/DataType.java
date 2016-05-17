@@ -2,7 +2,6 @@ package com.asiainfo.lucene.common;
 
 import java.io.StringReader;
 import java.lang.reflect.Constructor;
-import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
 import java.math.BigDecimal;
@@ -13,23 +12,12 @@ import java.sql.Timestamp;
 import java.text.NumberFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 import java.util.Vector;
 
 import javax.sql.rowset.CachedRowSet;
 
-import org.apache.lucene.document.ByteDocValuesField;
-import org.apache.lucene.document.DateTools;
-import org.apache.lucene.document.Document;
-import org.apache.lucene.document.DoubleField;
-import org.apache.lucene.document.Field;
-import org.apache.lucene.document.FieldType;
-import org.apache.lucene.document.FloatField;
-import org.apache.lucene.document.IntField;
-import org.apache.lucene.document.LongField;
-
-import com.asiainfo.lucene.core.field.LuceneFieldType;
+import com.asiainfo.lucene.util.locale.LuceneLocaleFactory;
 
 public class DataType {
 	public static final String DATATYPE_STRING = "String";
@@ -103,8 +91,7 @@ public class DataType {
 		if (type.equalsIgnoreCase("DateTime")) {
 			return 93;
 		}
-		String msg = "getDatabaseDataType error";
-		throw new Exception(msg);
+		throw new LuceneI18NException("com.asiainfo.lucene.common.DataType.no_type",new Object[]{type});
 	}
 
 	public static String getJavaObjectType(String type) {
@@ -307,11 +294,9 @@ public class DataType {
 		if (type.equals(Float.TYPE)) return "0";
 		if (type.equals(Byte.TYPE)) return "((byte)0)";
 		if (type.equals(Character.TYPE)) return "((char)0)";
-		if (type.equals(Boolean.TYPE)) {
-			return "false";
-		}
-		String msg = String.format("%s getNullValueString error", new String[] { type.getName() });
-		throw new RuntimeException(msg);
+		if (type.equals(Boolean.TYPE))return "false";
+		
+		throw new RuntimeException(LuceneLocaleFactory.getResource("com.asiainfo.lucene.common.DataType.no_type",new Object[]{type.getName()}));
 	}
 
 	public static String getToSimpleDataTypeFunction(String type) {
@@ -546,8 +531,7 @@ public class DataType {
 				SimpleDateFormat a = new SimpleDateFormat("yyyy-MM-dd");
 				return new java.sql.Date(a.parse(value.toString()).getTime());
 			} catch (Exception e) {
-				String msg = String.format("value[%s],transform %s type error", new String[] { value.toString(), "Date" });
-				throw new RuntimeException(msg);
+				throw new RuntimeException(LuceneLocaleFactory.getResource("com.asiainfo.lucene.common.DataType.transfer",new String[] { value.toString(), "Date" }));
 			}
 		}
 		if (type.equals(Time.class)) {
@@ -559,8 +543,7 @@ public class DataType {
 				SimpleDateFormat a = new SimpleDateFormat("HH:mm:ss");
 				return new Time(a.parse(value.toString()).getTime());
 			} catch (Exception e) {
-				String msg = String.format("value[%s],transform %s type error", new String[] { value.toString(), "Time" });
-				throw new RuntimeException(msg);
+				throw new RuntimeException(LuceneLocaleFactory.getResource("com.asiainfo.lucene.common.DataType.transfer",new String[] { value.toString(), "Time" }));
 			}
 		}
 		if (type.equals(Timestamp.class)) {
@@ -574,8 +557,8 @@ public class DataType {
 				if (tmpstr.trim().length() <= 10) tmpstr = tmpstr + " 00:00:00";
 				return new Timestamp(a.parse(tmpstr).getTime());
 			} catch (Exception e) {
-				String msg = String.format("value[%s],transform %s type error", new String[] { value.toString(), "DateTime" });
-				throw new RuntimeException(msg);
+				throw new RuntimeException(LuceneLocaleFactory.getResource("com.asiainfo.lucene.common.DataType.transfer",new String[] { value.toString(), "DateTime" }));
+
 			}
 		}
 		if ((type.equals(Double.class)) || (type.equals(Double.TYPE))) {
@@ -610,8 +593,7 @@ public class DataType {
 				}
 				return new Boolean(false);
 			}
-			String msg = String.format("value[%s],transform %s type error", new String[] { value.toString(), "Boolean" });
-			throw new RuntimeException(msg);
+			throw new RuntimeException(LuceneLocaleFactory.getResource("com.asiainfo.lucene.common.DataType.transfer",new String[] { value.toString(), "Boolean" }));
 		}
 
 		return value;
@@ -670,11 +652,7 @@ public class DataType {
 				SimpleDateFormat DATA_FORMAT_yyyyMMdd = new SimpleDateFormat("yyyy-MM-dd");
 				return new java.sql.Date(DATA_FORMAT_yyyyMMdd.parse(tmpstr).getTime());
 			} catch (Exception ex) {
-				if ((ex instanceof RuntimeException)) {
-					throw ((RuntimeException) ex);
-				}
-				String msg = String.format("value[%s],transform %s type error", new String[] { value.toString(), "Date" });
-				throw new RuntimeException(msg, ex);
+				throw new RuntimeException(LuceneLocaleFactory.getResource("com.asiainfo.lucene.common.DataType.transfer",new String[] { value.toString(), "Date" }));
 			}
 		}
 
@@ -687,8 +665,7 @@ public class DataType {
 				SimpleDateFormat DATA_FORMAT_HHmmss = new SimpleDateFormat("HH:mm:ss");
 				return new Time(DATA_FORMAT_HHmmss.parse(value.toString()).getTime());
 			} catch (Exception e) {
-				String msg = String.format("value[%s],transform %s type error", new String[] { value.toString(), "Time" });
-				throw new RuntimeException(msg, e);
+				throw new RuntimeException(LuceneLocaleFactory.getResource("com.asiainfo.lucene.common.DataType.transfer",new String[] { value.toString(), "Time" }));
 			}
 		}
 		if (type.equalsIgnoreCase("DateTime")) {
@@ -702,8 +679,7 @@ public class DataType {
 				if (tmpstr.trim().length() <= 10) tmpstr = tmpstr + " 00:00:00";
 				return new Timestamp(a.parse(tmpstr).getTime());
 			} catch (Exception e) {
-				String msg = String.format("value[%s],transform %s type error", new String[] { value.toString(), "DateTime" });
-				throw new RuntimeException(msg);
+				throw new RuntimeException(LuceneLocaleFactory.getResource("com.asiainfo.lucene.common.DataType.transfer",new String[] { value.toString(), "DateTime" }));
 			}
 		}
 		if ((type.equalsIgnoreCase("Double")) || (type.equalsIgnoreCase("double"))) {
@@ -738,8 +714,7 @@ public class DataType {
 				}
 				return new Boolean(false);
 			}
-			String msg = String.format("value[%s],transform %s type error", new String[] { value.toString(), "Boolean" });
-			throw new RuntimeException(msg);
+			throw new RuntimeException(LuceneLocaleFactory.getResource("com.asiainfo.lucene.common.DataType.transfer",new String[] { value.toString(), "Boolean" }));
 		}
 
 		return value;
@@ -823,9 +798,8 @@ public class DataType {
 		if ((obj instanceof Timestamp)) {
 			return new java.sql.Date(((Timestamp) obj).getTime());
 		}
+		throw new RuntimeException(LuceneLocaleFactory.getResource("com.asiainfo.lucene.common.DataType.transfer",new String[] { obj.toString(), "Date" }));
 
-		String msg = String.format("value[%s],transform %s type error", new String[] { obj.toString(), "Date" });
-		throw new RuntimeException(msg);
 	}
 
 	public static Time getAsTime(Object obj) {
@@ -834,9 +808,8 @@ public class DataType {
 		if ((obj instanceof Timestamp)) {
 			return new Time(((Timestamp) obj).getTime());
 		}
+		throw new RuntimeException(LuceneLocaleFactory.getResource("com.asiainfo.lucene.common.DataType.transfer",new String[] { obj.toString(), "Time" }));
 
-		String msg = String.format("value[%s],transform %s type error", new String[] { obj.toString(), "Time" });
-		throw new RuntimeException(msg);
 	}
 
 	public static Timestamp getAsDateTime(Object obj) {
@@ -845,9 +818,8 @@ public class DataType {
 		if ((obj instanceof java.sql.Date)) {
 			return new Timestamp(((java.sql.Date) obj).getTime());
 		}
+		throw new RuntimeException(LuceneLocaleFactory.getResource("com.asiainfo.lucene.common.DataType.transfer",new String[] { obj.toString(), "DateTime" }));
 
-		String msg = String.format("value[%s],transform %s type error", new String[] { obj.toString(), "DateTime" });
-		throw new RuntimeException(msg);
 	}
 
 	public static String getModifyName(int mod) {

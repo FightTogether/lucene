@@ -20,7 +20,7 @@ public class LuceneLocaleFactory {
 	private static Locale DEFAULT_LOCALE = Locale.CHINA;
 	private static ICustomLocaleResource CUSTOM_LOCALE_INSTANCE = null;
 
-	private static final HashMap LOCALE_RESOURCE_MAPPING = new HashMap();
+	private static final HashMap<Long, HashMap<String, String>> LOCALE_RESOURCE_MAPPING = new HashMap<Long, HashMap<String, String>>();
 
 	public static String getResource(String key) {
 		return getResource(DEFAULT_RESOURCE_BUNDLE_NAME, key);
@@ -54,7 +54,7 @@ public class LuceneLocaleFactory {
 						p.load(is);
 						is.close();
 
-						HashMap tmp = new HashMap();
+						HashMap<String, String> tmp = new HashMap<String, String>();
 						Set set = p.keySet();
 						for (Iterator iter = set.iterator(); iter.hasNext();) {
 							String item = (String) iter.next();
@@ -69,19 +69,33 @@ public class LuceneLocaleFactory {
 						throw new RuntimeException(ex);
 					}
 				}
-				resource = (HashMap) LOCALE_RESOURCE_MAPPING.get(hashCode);
+				resource = LOCALE_RESOURCE_MAPPING.get(hashCode);
 			}
 		}
 
 		String rtn = (String) resource.get(key);
 		if (rtn == null) {
 			rtn = key;
-			String fileName = DEFAULT_RESOURCE_BUNDLE_NAME+"_" + locale.toString();
+			String fileName = DEFAULT_RESOURCE_BUNDLE_NAME + "_" + locale.toString();
 			log.error("Not found resource " + key + " from " + fileName);
 		}
 		return rtn;
 	}
+
+	public static String getResource(String key, Object[] params) {
+		String value = getResource(key);
+		if (params == null || params.length == 0)return value;
+		for (int i = 0; i < params.length; i++) {
+			if (params[i] == null) {
+				value = StringUtils.replaceOnce(value, "{" + i + "}", "{null}");
+			} else {
+				value = StringUtils.replaceOnce(value, "{" + i + "}", params[i].toString());
+			}
+		}
+		return value;
+	}
+
 	public static void main(String[] args) {
-		LuceneLocaleFactory.getResource("a");
+		System.out.println(LuceneLocaleFactory.getResource("a"));
 	}
 }
