@@ -96,6 +96,6 @@ public class LuceneLocaleFactory {
 	}
 
 	public static void main(String[] args) {
-		System.out.println(LuceneLocaleFactory.getResource("a"));
+		System.out.println(LuceneLocaleFactory.getResource("com.asiainfo.lucene.common.DataType.no_type",new String[]{"haha"}));
 	}
 }

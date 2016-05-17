@@ -8,16 +8,16 @@ import org.wltea.analyzer.dic.Dictionary;
 import org.wltea.analyzer.lucene.IKAnalyzer;
 
 import com.asiainfo.lucene.common.IndexServiceFactory.IndexSettings;
-import com.asiainfo.lucene.util.LuceneCommon;
+import com.asiainfo.lucene.util.CommonUtil;
 
 public class LuceneServer {
 	private static String strPropertiesName = "lucene.base.properties";
-	private static String analyzerClassName = LuceneCommon.getProertiesValue("index.Analyzer", strPropertiesName);
-	private static String analyzerSmart = LuceneCommon.getProertiesValue("index.Analyzer.Smart", strPropertiesName);
-	private static String path = LuceneCommon.getProertiesValue("index.path", strPropertiesName);
-	private static String prefixHTML = LuceneCommon.getProertiesValue("index.prefixHTML", strPropertiesName);
-	private static String suffixHTML = LuceneCommon.getProertiesValue("index.suffixHTML", strPropertiesName);
-	private static Integer maxLength = Integer.valueOf(LuceneCommon.getProertiesValue("index.maxLength", strPropertiesName));
+	private static String analyzerClassName = CommonUtil.getProertiesValue("index.Analyzer", strPropertiesName);
+	private static String analyzerSmart = CommonUtil.getProertiesValue("index.Analyzer.Smart", strPropertiesName);
+	private static String path = CommonUtil.getProertiesValue("index.path", strPropertiesName);
+	private static String prefixHTML = CommonUtil.getProertiesValue("index.prefixHTML", strPropertiesName);
+	private static String suffixHTML = CommonUtil.getProertiesValue("index.suffixHTML", strPropertiesName);
+	private static Integer maxLength = Integer.valueOf(CommonUtil.getProertiesValue("index.maxLength", strPropertiesName));
 	private static Collection<String> addWords;
 	private static Collection<String> disableWords;
 
