@@ -5,6 +5,7 @@ import java.io.IOException;
 import org.apache.lucene.document.Document;
 import org.apache.lucene.index.IndexWriter;
 import org.apache.lucene.index.IndexableField;
+import org.apache.lucene.index.Term;
 import org.apache.lucene.search.IndexSearcher;
 import org.apache.lucene.search.Query;
 import org.apache.lucene.search.ScoreDoc;
@@ -29,4 +30,6 @@ public interface DataStore {
 	Object[] retrieve(IndexSearcher indexSearcher, Query query) throws Exception;
 
 	public void deleteDocuments(IndexWriter indexWriter, Query... queries) throws Exception;
+
+	void deleteDocuments(IndexWriter indexWriter,Term... terms) throws Exception;
 }

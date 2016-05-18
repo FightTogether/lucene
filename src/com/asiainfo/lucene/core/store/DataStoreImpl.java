@@ -8,6 +8,7 @@ import java.util.List;
 import org.apache.lucene.document.Document;
 import org.apache.lucene.index.IndexWriter;
 import org.apache.lucene.index.IndexableField;
+import org.apache.lucene.index.Term;
 import org.apache.lucene.search.IndexSearcher;
 import org.apache.lucene.search.Query;
 import org.apache.lucene.search.ScoreDoc;
@@ -81,5 +82,9 @@ public class DataStoreImpl implements DataStore {
 	@Override
 	public void deleteDocuments(IndexWriter indexWriter, Query... queries) throws Exception {
 		indexWriter.deleteDocuments(queries);
+	}
+	@Override
+	public void deleteDocuments(IndexWriter indexWriter, Term... terms) throws Exception {
+		indexWriter.deleteDocuments(terms);
 	}
 }

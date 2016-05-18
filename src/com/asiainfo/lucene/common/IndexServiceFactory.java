@@ -14,6 +14,8 @@ import org.apache.lucene.search.IndexSearcher;
 import org.apache.lucene.store.Directory;
 import org.apache.lucene.store.FSDirectory;
 
+import com.asiainfo.lucene.util.locale.LuceneLocaleFactory;
+
 public class IndexServiceFactory {
 	private static transient Log log = LogFactory.getLog(IndexServiceFactory.class);
 	private IndexServiceFactory() {
@@ -32,7 +34,7 @@ public class IndexServiceFactory {
 		try {
 			return getIndexWriter(CacheFactory.getInstance().getDefaultIdxSetting());
 		} catch (IOException e) {
-			log.error("ªÒ»°ƒ¨»œindexWriter ß∞‹", e);
+			log.error(LuceneLocaleFactory.getResource("getDefaultIdxWriter error"), e);
 		}
 		return null;
 		

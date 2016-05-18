@@ -11,6 +11,8 @@ public class MinxBean {
 	@LuceneFieldType(indexed=true,stored=true)
 	private String name;
 	@LuceneFieldType(indexed=true,stored=true)
+	private String desc;
+	@LuceneFieldType(indexed=true,stored=true)
 	private Timestamp createTime;
 	@LuceneFieldType(indexed=true,stored=true)
 	private Date effectiveDate;
@@ -45,9 +47,16 @@ public class MinxBean {
 	public void setNoAllow(String noAllow) {
 		this.noAllow = noAllow;
 	}
+	
+	public String getDesc() {
+		return desc;
+	}
+	public void setDesc(String desc) {
+		this.desc = desc;
+	}
 	@Override
 	public String toString() {
-		return new StringBuffer().append("id=").append(id).append("  name=").append(name)
+		return new StringBuffer().append("id=").append(id).append("  name=").append(name).append(" desc=").append(desc)
 				.append("  createTime=").append(createTime).append("  effectiveDate=").append(effectiveDate)
 				.append("  noAllow=").append(noAllow).toString();
 	}
